@@ -1,49 +1,67 @@
 import streamlit as st
 import base64
-from pathlib import Path
 
-# ---------- PAGE CONFIG ----------
+#PAGE CONFIG
 st.set_page_config(
     page_title="🐟 Fish Classification Dashboard",
     page_icon="🐟",
     layout="wide"
 )
 
-# ---------- HELPER: CONVERT IMAGE TO BASE64 ----------
-def get_base64_image(file):
-    """
-    Accepts a file path (str) or a file-like object (Streamlit upload)
-    """
-    try:
-        if isinstance(file, str) and Path(file).exists():  # file path exists
-            with open(file, "rb") as f:
-                data = f.read()
-        else:  # file-like object
-            data = file.read()
-        return base64.b64encode(data).decode()
-    except Exception as e:
-        st.warning(f"Could not load background image: {e}")
-        return None
+#HELPER: CONVERT IMAGE TO BASE64
+def get_base64_image(path):
+    with open(path, "rb") as f:
+        return base64.b64encode(f.read()).decode()
 
-# ---------- BACKGROUND IMAGE ----------
-default_img_path = "images/pexels-quang-nguyen-vinh-222549-2131967.jpg"
-uploaded_file = st.file_uploader("Upload a background image (optional)", type=["jpg","jpeg","png"])
+# Background image path
+img_path = "images/pexels-quang-nguyen-vinh-222549-2131967.jpg"
+img_base64 = get_base64_image(img_path)
 
-bg_image = uploaded_file if uploaded_file is not None else default_img_path
-img_base64 = get_base64_image(bg_image)
+#CUSTOM CSS
+st.markdown(f"""
+    <style>
+    /* Background Image */
+    .stApp {{
+        background: url("data:image/jpg;base64,{img_base64}") no-repeat center center fixed;
+        background-size: cover;
+    }}
 
-if img_base64:
-    st.markdown(f"""
-        <style>
-        .stApp {{
-            background: url("data:image/jpg;base64,{img_base64}") no-repeat center center fixed;
-            background-size: cover;
-        }}
-        </style>
-    """, unsafe_allow_html=True)
+    /* Title */
+    .main-title {{
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
+        color: white;
+        text-align: center;
+        padding: 25px;
+        border-radius: 20px;
+        font-size: 40px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+        margin-bottom: 25px;
+    }}
 
-# ---------- TITLE ----------
-st.markdown(
-    "<div class='main-title'>🐟 Multiclass Fish Image Classification Dashboard</div>",
-    unsafe_allow_html=True
-)
+    /* Section Cards (Glass Effect) */
+    .section {{
+        background: rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(10px);
+        padding: 20px;  /* Force text color to white */
+        border-radius: 15px;
+        box-shadow: 0px 4px 20px rgba(0,0,0,0.3);
+        margin-bottom: 20px;
+        font-size: 18px;
+        line-height: 1.6;
+    }}
+
+   
+    /* Footer */
+    .footer {{
+        text-align: center;
+        color: white;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+        margin-top: 20px;
+    }}
+    </style>
+""", unsafe_allow_html=True)
+
+#TITLE
+st.markdown("<div class='main-title'>🐟 Multiclass Fish Image Classification Dashboard</div>", unsafe_allow_html=True)
