@@ -14,7 +14,7 @@ def get_base64_image(path):
         return base64.b64encode(f.read()).decode()
 
 # Background image path
-img_path = r"c:\\Users\\vnave\\Downloads\\pexels-quang-nguyen-vinh-222549-2131967.jpg"
+img_path = "images/pexels-quang-nguyen-vinh-222549-2131967.jpg"
 img_base64 = get_base64_image(img_path)
 
 # ---------- CUSTOM CSS ----------
@@ -64,4 +64,5 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # ---------- TITLE ----------
+
 st.markdown("<div class='main-title'>🐟 Multiclass Fish Image Classification Dashboard</div>", unsafe_allow_html=True)
